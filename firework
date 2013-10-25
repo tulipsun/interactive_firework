@@ -1,0 +1,55 @@
+ArrayList<ParticleSystem> systems;
+
+import processing.video.*;
+Capture video;
+
+color ParticalColor;
+int colorsAssigned;
+
+void setup() {
+  size(1200, 850);
+  systems = new ArrayList<ParticleSystem>();
+  video = new Capture(this,width,height);
+  video.start();
+}
+
+void draw() {
+  background(0);
+  for (ParticleSystem ps: systems) {
+    ps.run();
+    ps.addParticle();
+  }
+  
+  for (int x=0; x <video.width;x++)
+  {
+    for(int y=0;y<video.height;y++)
+    {
+      int loc = x + y*video.width;
+      color currentColor = video.pixels[loc];
+    }
+  }
+    
+    
+    
+  if( video.available())
+  {
+    video.read();
+  }
+  video.loadPixels();
+  //image(video,0,0);
+  
+  
+  
+  if (systems.isEmpty()) {
+    fill(255);
+    textAlign(CENTER);
+    text("click mouse to add particle systems", width/2, height/2);
+  }
+}
+
+void mousePressed() {
+  colorsAssigned++;
+  systems.add(new ParticleSystem(1, new PVector(mouseX, mouseY)));
+  int loc =mouseX+mouseY*video.width;
+  ParticalColor = video.pixels[loc];
+}
